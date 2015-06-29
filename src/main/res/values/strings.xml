@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Happiness Tracker</string>
+    <string name="smile_sad">Sad</string>
+    <string name="smile_normal">Normal</string>
+    <string name="smile_happy">Happy</string>
+    <string name="action_about">Stats</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_stats">Stats</string>
+</resources>
