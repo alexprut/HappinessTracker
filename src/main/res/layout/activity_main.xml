@@ -6,6 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:id="@+id/relative_layout"
     tools:context=".MainActivity">
 
     <RelativeLayout
@@ -13,26 +14,26 @@
         android:layout_height="wrap_content">
 
         <ImageButton
-            android:id="@+id/buttonSmileSad"
+            android:id="@+id/button_smile_sad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="clickButtonSad"
             android:src="@drawable/smile_sad" />
 
         <ImageButton
-            android:id="@+id/buttonSmileNormal"
+            android:id="@+id/button_smile_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/buttonSmileSad"
-            android:onClick="clickButtonSad"
+            android:layout_toRightOf="@id/button_smile_sad"
+            android:onClick="clickButtonNormal"
             android:src="@drawable/smile_normal" />
 
         <ImageButton
-            android:id="@+id/buttonSmileHappy"
+            android:id="@+id/button_smile_happy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/buttonSmileNormal"
-            android:onClick="clickButtonSad"
+            android:layout_toRightOf="@id/button_smile_normal"
+            android:onClick="clickButtonHappy"
             android:src="@drawable/smile_happy" />
     </RelativeLayout>
 
@@ -42,29 +43,14 @@
         android:layout_marginTop="100dp"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/smile_sad" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/smile_normal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/smile_happy" />
-
         <EditText
-            android:id="@+id/motivation"
+            android:id="@+id/gratification_message"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:editable="true"
             android:hint="Insert information"
-            android:inputType="text"
-            android:editable="true" />
+            android:inputType="text" />
 
     </LinearLayout>
 </RelativeLayout>
