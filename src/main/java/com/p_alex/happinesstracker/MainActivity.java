@@ -81,40 +81,42 @@ public class MainActivity extends ActionBarActivity {
 
         Cursor cursor = getTodaySmileSamples();
 
-        cursor.moveToFirst();
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
 
-        Double countSadSmiles = 0.0;
-        Double countNormalSmiles = 0.0;
-        Double countHappySmiles = 0.0;
+            Double countSadSmiles = 0.0;
+            Double countNormalSmiles = 0.0;
+            Double countHappySmiles = 0.0;
 
-        while (!cursor.isLast()) {
-            switch (cursor.getInt(1)) {
-                case 1:
-                    countSadSmiles++;
-                    break;
-                case 2:
-                    countNormalSmiles++;
-                    break;
-                case 3:
-                    countHappySmiles++;
-                    break;
+            while (!cursor.isLast()) {
+                switch (cursor.getInt(1)) {
+                    case 1:
+                        countSadSmiles++;
+                        break;
+                    case 2:
+                        countNormalSmiles++;
+                        break;
+                    case 3:
+                        countHappySmiles++;
+                        break;
+                }
+
+                cursor.moveToNext();
             }
 
-            cursor.moveToNext();
-        }
+            Double max = Math.max(countSadSmiles, Math.max(countNormalSmiles, countHappySmiles));
 
-        Double max = Math.max(countSadSmiles, Math.max(countNormalSmiles, countHappySmiles));
+            if (Double.compare(max, countSadSmiles) == 0) {
+                relativeLayout.setBackgroundColor(COLOR_SAD);
+            }
 
-        if (Double.compare(max, countSadSmiles) == 0) {
-            relativeLayout.setBackgroundColor(COLOR_SAD);
-        }
+            if (Double.compare(max, countNormalSmiles) == 0) {
+                relativeLayout.setBackgroundColor(COLOR_NORMAL);
+            }
 
-        if (Double.compare(max, countNormalSmiles) == 0) {
-            relativeLayout.setBackgroundColor(COLOR_NORMAL);
-        }
-
-        if (Double.compare(max, countHappySmiles) == 0) {
-            relativeLayout.setBackgroundColor(COLOR_HAPPY);
+            if (Double.compare(max, countHappySmiles) == 0) {
+                relativeLayout.setBackgroundColor(COLOR_HAPPY);
+            }
         }
     }
 

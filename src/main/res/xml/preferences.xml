@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Settings">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_notifications"
+            android:summary="Enable notifications to ask me ho I feel during the day"
+            android:title="Enable daily notifications" />
+        <ListPreference
+            android:defaultValue="4"
+            android:dependency="pref_notifications"
+            android:entries="@array/pref_samples_number_value"
+            android:entryValues="@array/pref_samples_number_value"
+            android:key="pref_samples_number"
+            android:summary="Number of time to ask you a day how do you feel"
+            android:title="Number of notification a day" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Info">
+        <Preference
+            android:summary="\u00A9 2015, created by P.Alex"
+            android:title="Installed version 0.1.0" />
+    </PreferenceCategory>
+</PreferenceScreen>
