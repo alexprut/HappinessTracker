@@ -1,6 +1,10 @@
 package com.p_alex.happinesstracker;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -54,6 +58,9 @@ public class MainActivity extends ActionBarActivity {
             case R.id.action_menu_settings:
                 openSettings();
                 break;
+            default:
+                openSettings();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -74,6 +81,40 @@ public class MainActivity extends ActionBarActivity {
     public void clickSmileButton(int smileType) {
         insertSmileSample(smileType);
         updateBackgroundColor();
+        createNotification();
+    }
+
+    public void createNotification() {
+        Notification.Builder notification = new Notification.Builder(this);
+        notification.setSmallIcon(R.drawable.smile_happy);
+        notification.setContentTitle("How do you feel now?");
+        notification.setAutoCancel(true);
+
+        Intent sadIntent = new Intent();
+        sadIntent.setAction("SAD_ACTION");
+        PendingIntent sadPendingIntent = PendingIntent.getBroadcast(
+                this, 2, sadIntent, PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        Intent normalIntent = new Intent();
+        normalIntent.setAction("NORMAL_ACTION");
+        PendingIntent normalPendingIntent = PendingIntent.getBroadcast(
+                this, 2, normalIntent, PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        Intent happyIntent = new Intent();
+        happyIntent.setAction("HAPPY_ACTION");
+        PendingIntent happyPendingIntent = PendingIntent.getBroadcast(
+                this, 2, happyIntent, PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        notification.addAction(R.drawable.smile_sad, "Sad", sadPendingIntent);
+        notification.addAction(R.drawable.smile_normal, "Normal", normalPendingIntent);
+        notification.addAction(R.drawable.smile_happy, "Happy", happyPendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification n = notification.build();
+        notificationManager.notify(1, n);
     }
 
     public void updateBackgroundColor() {
@@ -120,10 +161,6 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void openAbout() {
-        startActivity(new Intent(this, AboutActivity.class));
-    }
-
     public void openSettings() {
         startActivity(new Intent(this, SettingsActivity.class));
     }
@@ -132,8 +169,6 @@ public class MainActivity extends ActionBarActivity {
         SQLiteDatabase db = database.getWritableDatabase();
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-
-        Log.d("date time now", dateFormat.format(new Date()));
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(TableInformation.Table.COLUMN_NAME_VALUE, sampleType);
