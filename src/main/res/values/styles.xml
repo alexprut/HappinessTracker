@@ -5,4 +5,7 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <color name="primary">#FF00FF</color>
+    <color name="primary_pressed">#0000FF</color>
+    <color name="ripple">#FF0000</color>
 </resources>
