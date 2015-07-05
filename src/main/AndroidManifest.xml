@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.p_alex.happinesstracker">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -39,20 +41,15 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".NotificationReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="SAD_ACTION" />
-                <action android:name="NORMAL_ACTION" />
-                <action android:name="HAPPY_ACTION" />
-            </intent-filter>
-        </receiver>
         <service
             android:name=".SamplesService"
             android:enabled="true"
             android:exported="false" />
+
+        <receiver
+            android:name=".SamplesReceiver"
+            android:enabled="true"
+            android:exported="false" />
     </application>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
 
 </manifest>

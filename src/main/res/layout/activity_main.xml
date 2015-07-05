@@ -36,21 +36,4 @@
             android:onClick="clickButtonHappy"
             android:src="@drawable/smile_happy" />
     </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/gratification_message"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:editable="true"
-            android:hint="Insert information"
-            android:inputType="text" />
-
-    </LinearLayout>
 </RelativeLayout>
