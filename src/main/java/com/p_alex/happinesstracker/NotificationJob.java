@@ -14,7 +14,7 @@ public class NotificationJob {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         boolean isNotificationsEnabled = preferences.getBoolean("pref_notifications", true);
 
-        if (!isNotificationJobStarted(context) && isNotificationsEnabled) {
+        if (isNotificationsEnabled) {
             int samplesNumber = Integer.parseInt(preferences.getString("pref_samples_number", "4"));
 
             Log.d("pref_samples_number", samplesNumber + "");

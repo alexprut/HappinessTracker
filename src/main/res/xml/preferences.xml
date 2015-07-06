@@ -18,6 +18,10 @@
     <PreferenceCategory android:title="Info">
         <Preference
             android:summary="\u00A9 2015, created by P.Alex"
-            android:title="Installed version 0.1.0" />
+            android:title="Installed version 0.1.0">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://github.com/PAlexcom/HappinessTracker" />
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>
