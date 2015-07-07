@@ -160,10 +160,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
         switch (position) {
             case 1:
-                cursor = database.getSmileSamples();
+                cursor = database.getWeekSmileSamples();
                 break;
             case 2:
-                cursor = database.getSmileSamples();
+                cursor = database.getMonthSmileSamples();
                 break;
             default:
                 cursor = database.getTodaySmileSamples();
@@ -207,6 +207,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             if (Double.compare(max, countHappySmiles) == 0) {
                 relativeLayout.setBackgroundColor(getResources().getColor(R.color.color_happy));
             }
+
+            Log.d("samples number", cursor.getCount() + "");
         }
     }
 

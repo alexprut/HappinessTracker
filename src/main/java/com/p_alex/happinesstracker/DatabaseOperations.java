@@ -25,9 +25,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DatabaseOperations extends SQLiteOpenHelper {
@@ -81,6 +83,61 @@ public class DatabaseOperations extends SQLiteOpenHelper {
         return db.insert(TableInformation.Table.TABLE_NAME, null, contentValues);
     }
 
+    private Date getPreviousDateFromToday(int offset) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, offset);
+        return cal.getTime();
+    }
+
+    private String last30DaysDate() {
+        return new SimpleDateFormat("yyyy/MM/dd")
+                .format(getPreviousDateFromToday(-30)) + " 00:00:00";
+    }
+
+    private String last7DaysDate() {
+        return new SimpleDateFormat("yyyy/MM/dd")
+                .format(getPreviousDateFromToday(-7)) + " 00:00:00";
+    }
+
+    private String todayDate() {
+        return new SimpleDateFormat("yyyy/MM/dd")
+                .format(getPreviousDateFromToday(0)) + " 00:00:00";
+    }
+
+    public Cursor getMonthSmileSamples() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] columns = {
+                TableInformation.Table.COLUMN_NAME_DATE,
+                TableInformation.Table.COLUMN_NAME_VALUE
+        };
+
+        Log.d("last 30 days date", last30DaysDate());
+
+        return db.query(
+                TableInformation.Table.TABLE_NAME,
+                columns,
+                "date >= '" + last30DaysDate() + "' AND date < '" + todayDate() + "'",
+                null, null, null, null);
+    }
+
+    public Cursor getWeekSmileSamples() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] columns = {
+                TableInformation.Table.COLUMN_NAME_DATE,
+                TableInformation.Table.COLUMN_NAME_VALUE
+        };
+
+        Log.d("last 7 days date", last7DaysDate());
+
+        return db.query(
+                TableInformation.Table.TABLE_NAME,
+                columns,
+                "date >= '" + last7DaysDate() + "' AND date < '" + todayDate() + "'",
+                null, null, null, null);
+    }
+
     public Cursor getTodaySmileSamples() {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -89,13 +146,10 @@ public class DatabaseOperations extends SQLiteOpenHelper {
                 TableInformation.Table.COLUMN_NAME_VALUE
         };
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        Date date = new Date();
-
         return db.query(
                 TableInformation.Table.TABLE_NAME,
                 columns,
-                "date >= '" + dateFormat.format(date) + " 00:00:00'",
+                "date >= '" + todayDate() + "'",
                 null, null, null, null);
     }
 
