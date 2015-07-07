@@ -20,14 +20,11 @@
 
 package com.p_alex.happinesstracker;
 
-import java.util.Locale;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -41,36 +38,18 @@ import com.melnykov.fab.FloatingActionButton;
 
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
-    public final static int SAMPLE_SAD = 1;
-    public final static int SAMPLE_NORMAL = 2;
-    public final static int SAMPLE_HAPPY = 3;
-    public final static int COLOR_SAD = 0xFFFFF59D;
-    public final static int COLOR_NORMAL = 0xFFFFF176;
-    public final static int COLOR_HAPPY = 0xFFFFEB3B;
     private PopupWindow popup;
-
-    private DatabaseOperations database = new DatabaseOperations(this);
-
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    ViewPager mViewPager;
+    private DatabaseOperations database;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        NotificationJob.start(this);
+        this.database = DatabaseOperations.getInstance(this);
+
+        SamplesNotification.startJob(this);
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -110,7 +89,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                             .setTabListener(this));
         }
 
-        updateBackgroundColor(0);
+        updateBackgroundColor(mViewPager.getCurrentItem());
     }
 
 
@@ -156,37 +135,40 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     }
 
     public void clickButtonSad(View view) {
-        popup.dismiss();
-        clickSmileButton(SAMPLE_SAD);
+        clickSmileButton(TableInformation.Table.SAMPLE_VALUE_SAD);
     }
 
     public void clickButtonNormal(View view) {
-        popup.dismiss();
-        clickSmileButton(SAMPLE_NORMAL);
+        clickSmileButton(TableInformation.Table.SAMPLE_VALUE_NORMAL);
     }
 
     public void clickButtonHappy(View view) {
-        popup.dismiss();
-        clickSmileButton(SAMPLE_HAPPY);
+        clickSmileButton(TableInformation.Table.SAMPLE_VALUE_HAPPY);
     }
 
     public void clickSmileButton(int smileType) {
+        popup.dismiss();
         database.insertSmileSample(smileType);
         updateBackgroundColor(mViewPager.getCurrentItem());
     }
 
     public void updateBackgroundColor(int position) {
-        Log.d("current item", position + "");
+        Log.d("Current tab item", position + "");
         View relativeLayout = (View) findViewById(R.id.pager);
 
         Cursor cursor;
 
-        if (position == 0) {
-            cursor = database.getTodaySmileSamples();
-        } else {
-            cursor = database.getSmileSamples();
+        switch (position) {
+            case 1:
+                cursor = database.getSmileSamples();
+                break;
+            case 2:
+                cursor = database.getSmileSamples();
+                break;
+            default:
+                cursor = database.getTodaySmileSamples();
+                break;
         }
-
 
 
         if (cursor.getCount() != 0) {
@@ -215,31 +197,26 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             Double max = Math.max(countSadSmiles, Math.max(countNormalSmiles, countHappySmiles));
 
             if (Double.compare(max, countSadSmiles) == 0) {
-                relativeLayout.setBackgroundColor(COLOR_SAD);
+                relativeLayout.setBackgroundColor(getResources().getColor(R.color.color_sad));
             }
 
             if (Double.compare(max, countNormalSmiles) == 0) {
-                relativeLayout.setBackgroundColor(COLOR_NORMAL);
+                relativeLayout.setBackgroundColor(getResources().getColor(R.color.color_normal));
             }
 
             if (Double.compare(max, countHappySmiles) == 0) {
-                relativeLayout.setBackgroundColor(COLOR_HAPPY);
+                relativeLayout.setBackgroundColor(getResources().getColor(R.color.color_happy));
             }
         }
     }
 
     public void openSamplesPopup(View view) {
-        LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = layoutInflater.inflate(R.layout.activity_popup, null);
-        popup = new PopupWindow(
-                popupView,
-                860,
-                300,
-                true
-        );
-
         Log.d("Popup", "show popup");
 
+        LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = layoutInflater.inflate(R.layout.activity_popup, null);
+
+        popup = new PopupWindow(popupView, 860, 300, true);
         popup.showAsDropDown((FloatingActionButton) findViewById(R.id.fab), -430, 40);
     }
 

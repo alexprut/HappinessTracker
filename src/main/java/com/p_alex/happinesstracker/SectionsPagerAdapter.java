@@ -31,6 +31,9 @@ import java.util.Locale;
  * one of the sections/tabs/pages.
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public static String FIRST_SECTION_TITLE = "Today";
+    public static String SECOND_SECTION_TITLE = "Week";
+    public static String THIRD_SECTION_TITLE = "Month";
 
     public SectionsPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -66,11 +69,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         Locale l = Locale.getDefault();
         switch (position) {
             case 0:
-                return "Today";
+                return FIRST_SECTION_TITLE;
             case 1:
-                return "Week";
+                return SECOND_SECTION_TITLE;
             case 2:
-                return "Month";
+                return THIRD_SECTION_TITLE;
         }
         return null;
     }

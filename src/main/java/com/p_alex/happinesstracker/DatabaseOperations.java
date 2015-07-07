@@ -31,12 +31,27 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DatabaseOperations extends SQLiteOpenHelper {
+    private static DatabaseOperations instance;
+    private Context context;
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Samples.db";
 
-    public DatabaseOperations(Context context) {
+    private DatabaseOperations(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
+    }
+
+    public static DatabaseOperations getInstance(Context context) {
+        if (instance == null) {
+            synchronized (DatabaseOperations.class) {
+                if (instance == null) {
+                    instance = new DatabaseOperations(context);
+                }
+            }
+        }
+
+        return instance;
     }
 
     public void onCreate(SQLiteDatabase db) {

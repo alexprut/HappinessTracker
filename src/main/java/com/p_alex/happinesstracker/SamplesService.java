@@ -20,15 +20,17 @@
 
 package com.p_alex.happinesstracker;
 
-import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 
 public class SamplesService extends Service {
+    public final String SAD_ACTION = "com.p_alex.happinesstracker.SAD_ACTION";
+    public final String NORMAL_ACTION = "com.p_alex.happinesstracker.NORMAL_ACTION";
+    public final String HAPPY_ACTION = "com.p_alex.happinesstracker.HAPPY_ACTION";
+
     public IBinder onBind(Intent intent) {
         return null;
     }
@@ -38,22 +40,20 @@ public class SamplesService extends Service {
 
         String action = intent.getAction();
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.cancel(1);
-
-        DatabaseOperations database = new DatabaseOperations(this);
+        SamplesNotification.cancelNotification(this);
+        DatabaseOperations database = DatabaseOperations.getInstance(this);
 
         switch (action) {
-            case "com.p_alex.happinesstracker.SAD_ACTION":
-                database.insertSmileSample(1);
+            case SAD_ACTION:
+                database.insertSmileSample(TableInformation.Table.SAMPLE_VALUE_SAD);
                 Log.d("shuffTest", "Pressed SAD");
                 break;
-            case "com.p_alex.happinesstracker.NORMAL_ACTION":
-                database.insertSmileSample(2);
+            case NORMAL_ACTION:
+                database.insertSmileSample(TableInformation.Table.SAMPLE_VALUE_NORMAL);
                 Log.d("shuffTest", "Pressed NORMAL");
                 break;
-            case "com.p_alex.happinesstracker.HAPPY_ACTION":
-                database.insertSmileSample(3);
+            case HAPPY_ACTION:
+                database.insertSmileSample(TableInformation.Table.SAMPLE_VALUE_HAPPY);
                 Log.d("shuffTest", "Pressed HAPPY");
                 break;
         }

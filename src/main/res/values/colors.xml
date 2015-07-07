@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_sad">#FFF59D</color>
+    <color name="color_normal">#FFF176</color>
+    <color name="color_happy">#FFEB3B</color>
+</resources>

@@ -33,6 +33,9 @@ public final class TableInformation {
         public static final String TABLE_NAME = "samples";
         public static final String COLUMN_NAME_DATE = "date";
         public static final String COLUMN_NAME_VALUE = "value";
+        public static final int SAMPLE_VALUE_SAD = 1;
+        public static final int SAMPLE_VALUE_NORMAL = 2;
+        public static final int SAMPLE_VALUE_HAPPY = 3;
     }
 
     public static final String COMMA_SEP = ",";
