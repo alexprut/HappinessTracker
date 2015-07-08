@@ -40,7 +40,6 @@ import com.melnykov.fab.FloatingActionButton;
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
     private PopupWindow popup;
     private DatabaseOperations database;
-    private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
     @Override
@@ -60,7 +59,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -149,13 +148,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     public void clickSmileButton(int smileType) {
         popup.dismiss();
         database.insertSmileSample(smileType);
-        updateBackgroundColor(mViewPager.getCurrentItem());
+        updateBackgroundHappiness(mViewPager.getCurrentItem());
     }
 
-    public void updateBackgroundColor(int position) {
+    public void updateBackgroundHappiness(int position) {
         Log.d("Current tab item", position + "");
-        View relativeLayout = (View) findViewById(R.id.pager);
-
         Cursor cursor;
 
         switch (position) {
@@ -170,23 +167,40 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 break;
         }
 
+        updateBackgroundColor(calculateHappiness(cursor));
+    }
 
+    public void updateBackgroundColor(int happinessType) {
+        ViewPager relativeLayout = (ViewPager) findViewById(R.id.pager);
+
+        switch (happinessType) {
+            case 1:
+                relativeLayout.setBackgroundColor(getResources().getColor(R.color.color_sad));
+                break;
+            case 2:
+                relativeLayout.setBackgroundColor(getResources().getColor(R.color.color_normal));
+                break;
+            default:
+                relativeLayout.setBackgroundColor(getResources().getColor(R.color.color_happy));
+                break;
+        }
+    }
+
+    public static int calculateHappiness(Cursor cursor) {
         if (cursor.getCount() != 0) {
             cursor.moveToFirst();
 
-            Double countSadSmiles = 0.0;
-            Double countNormalSmiles = 0.0;
-            Double countHappySmiles = 0.0;
+            Double countSadSmiles = 0.0, countNormalSmiles = 0.0, countHappySmiles = 0.0;
 
             while (!cursor.isLast()) {
                 switch (cursor.getInt(1)) {
-                    case 1:
+                    case TableInformation.Table.SAMPLE_VALUE_SAD:
                         countSadSmiles++;
                         break;
-                    case 2:
+                    case TableInformation.Table.SAMPLE_VALUE_NORMAL:
                         countNormalSmiles++;
                         break;
-                    case 3:
+                    case TableInformation.Table.SAMPLE_VALUE_HAPPY:
                         countHappySmiles++;
                         break;
                 }
@@ -197,19 +211,19 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             Double max = Math.max(countSadSmiles, Math.max(countNormalSmiles, countHappySmiles));
 
             if (Double.compare(max, countSadSmiles) == 0) {
-                relativeLayout.setBackgroundColor(getResources().getColor(R.color.color_sad));
+                return TableInformation.Table.SAMPLE_VALUE_SAD;
             }
 
             if (Double.compare(max, countNormalSmiles) == 0) {
-                relativeLayout.setBackgroundColor(getResources().getColor(R.color.color_normal));
+                return TableInformation.Table.SAMPLE_VALUE_NORMAL;
             }
 
             if (Double.compare(max, countHappySmiles) == 0) {
-                relativeLayout.setBackgroundColor(getResources().getColor(R.color.color_happy));
+                return TableInformation.Table.SAMPLE_VALUE_HAPPY;
             }
-
-            Log.d("samples number", cursor.getCount() + "");
         }
+
+        return 0;
     }
 
     public void openSamplesPopup(View view) {
