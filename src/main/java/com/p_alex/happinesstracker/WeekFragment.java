@@ -20,13 +20,15 @@
 
 package com.p_alex.happinesstracker;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
-public class WeekFragment extends Fragment {
+public class WeekFragment extends ApplicationFragment {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -45,10 +47,31 @@ public class WeekFragment extends Fragment {
         return fragment;
     }
 
+    public void onStart() {
+        super.onStart();
+        updateBackgroundHappiness();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_week, container, false);
         return rootView;
+    }
+
+    public void updateBackgroundHappiness() {
+        DatabaseOperations database = DatabaseOperations.getInstance(getActivity());
+        Cursor cursor;
+
+        cursor = database.getWeekSmileSamples();
+
+        int happinessType = calculateHappiness(cursor);
+
+        updateBackgroundImage(happinessType);
+        updateBackgroundColor(happinessType);
+    }
+
+    public RelativeLayout getRelativeLayout() {
+        return (RelativeLayout) getView().findViewById(R.id.fragment_week);
     }
 }

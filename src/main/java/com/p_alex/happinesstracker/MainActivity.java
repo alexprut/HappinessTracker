@@ -39,15 +39,12 @@ import com.melnykov.fab.FloatingActionButton;
 
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
-    private PopupWindow popup;
-    private DatabaseOperations database;
     private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.database = DatabaseOperations.getInstance(this);
 
         SamplesNotification.startJob(this);
 
@@ -57,7 +54,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setLogo(R.mipmap.logo_action_bar);
         actionBar.setDisplayUseLogoEnabled(true);
-
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -74,7 +70,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             @Override
             public void onPageSelected(int position) {
                 actionBar.setSelectedNavigationItem(position);
-                updateBackgroundColor(position);
             }
         });
 
@@ -89,8 +84,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
-
-        updateBackgroundColor(mViewPager.getCurrentItem());
     }
 
 
@@ -133,111 +126,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
-    public void clickButtonSad(View view) {
-        clickSmileButton(TableInformation.Table.SAMPLE_VALUE_SAD);
-    }
-
-    public void clickButtonNormal(View view) {
-        clickSmileButton(TableInformation.Table.SAMPLE_VALUE_NORMAL);
-    }
-
-    public void clickButtonHappy(View view) {
-        clickSmileButton(TableInformation.Table.SAMPLE_VALUE_HAPPY);
-    }
-
-    public void clickSmileButton(int smileType) {
-        popup.dismiss();
-        database.insertSmileSample(smileType);
-        updateBackgroundHappiness(mViewPager.getCurrentItem());
-    }
-
-    public void updateBackgroundHappiness(int position) {
-        Log.d("Current tab item", position + "");
-        Cursor cursor;
-
-        switch (position) {
-            case 1:
-                cursor = database.getWeekSmileSamples();
-                break;
-            case 2:
-                cursor = database.getMonthSmileSamples();
-                break;
-            default:
-                cursor = database.getTodaySmileSamples();
-                break;
-        }
-
-        updateBackgroundColor(calculateHappiness(cursor));
-    }
-
-    public void updateBackgroundColor(int happinessType) {
-        ViewPager relativeLayout = (ViewPager) findViewById(R.id.pager);
-
-        switch (happinessType) {
-            case 1:
-                relativeLayout.setBackgroundColor(getResources().getColor(R.color.color_sad));
-                break;
-            case 2:
-                relativeLayout.setBackgroundColor(getResources().getColor(R.color.color_normal));
-                break;
-            default:
-                relativeLayout.setBackgroundColor(getResources().getColor(R.color.color_happy));
-                break;
-        }
-    }
-
-    public static int calculateHappiness(Cursor cursor) {
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
-
-            Double countSadSmiles = 0.0, countNormalSmiles = 0.0, countHappySmiles = 0.0;
-
-            while (!cursor.isLast()) {
-                switch (cursor.getInt(1)) {
-                    case TableInformation.Table.SAMPLE_VALUE_SAD:
-                        countSadSmiles++;
-                        break;
-                    case TableInformation.Table.SAMPLE_VALUE_NORMAL:
-                        countNormalSmiles++;
-                        break;
-                    case TableInformation.Table.SAMPLE_VALUE_HAPPY:
-                        countHappySmiles++;
-                        break;
-                }
-
-                cursor.moveToNext();
-            }
-
-            Double max = Math.max(countSadSmiles, Math.max(countNormalSmiles, countHappySmiles));
-
-            if (Double.compare(max, countSadSmiles) == 0) {
-                return TableInformation.Table.SAMPLE_VALUE_SAD;
-            }
-
-            if (Double.compare(max, countNormalSmiles) == 0) {
-                return TableInformation.Table.SAMPLE_VALUE_NORMAL;
-            }
-
-            if (Double.compare(max, countHappySmiles) == 0) {
-                return TableInformation.Table.SAMPLE_VALUE_HAPPY;
-            }
-        }
-
-        return 0;
-    }
-
-    public void openSamplesPopup(View view) {
-        Log.d("Popup", "show popup");
-
-        LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = layoutInflater.inflate(R.layout.activity_popup, null);
-
-        popup = new PopupWindow(popupView, 800, 300, true);
-        popup.setOutsideTouchable(true);
-        popup.setBackgroundDrawable(new BitmapDrawable());
-        popup.showAsDropDown((FloatingActionButton) findViewById(R.id.fab), -400, 40);
     }
 
     public void openSettings() {
