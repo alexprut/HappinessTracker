@@ -11,6 +11,10 @@ and calculate your average happiness during the Day, last Week (last 7 days) and
 During the day the application shows you randomly some quick/short motivational and positive quotes or phrases.
 Furthermore once a day it asks you to write one thing that you are grateful for.
 
+![Main application activity](https://palexcom.github.io/HappinessTracker/img/HappinessTracker.png)  
+
+![Notification application activity](https://palexcom.github.io/HappinessTracker/img/HappinessTracker-notifications.png)
+
 The science behind
 ------------------
 Happiness Tracker is a totally positive application based on the science of positive psychology.
