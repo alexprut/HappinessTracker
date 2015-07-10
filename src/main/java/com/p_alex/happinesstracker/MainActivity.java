@@ -22,6 +22,7 @@ package com.p_alex.happinesstracker;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.FragmentTransaction;
@@ -54,8 +55,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setLogo(R.mipmap.ic_launcher);
+        actionBar.setLogo(R.mipmap.logo_action_bar);
         actionBar.setDisplayUseLogoEnabled(true);
+
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -232,8 +234,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = layoutInflater.inflate(R.layout.activity_popup, null);
 
-        popup = new PopupWindow(popupView, 860, 300, true);
-        popup.showAsDropDown((FloatingActionButton) findViewById(R.id.fab), -430, 40);
+        popup = new PopupWindow(popupView, 800, 300, true);
+        popup.setOutsideTouchable(true);
+        popup.setBackgroundDrawable(new BitmapDrawable());
+        popup.showAsDropDown((FloatingActionButton) findViewById(R.id.fab), -400, 40);
     }
 
     public void openSettings() {

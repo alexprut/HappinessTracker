@@ -72,7 +72,7 @@ public class SamplesNotification {
 
     public static void fireNotification(Context context) {
         android.app.Notification.Builder notification = new android.app.Notification.Builder(context);
-        notification.setSmallIcon(R.drawable.smile_happy)
+        notification.setSmallIcon(R.mipmap.logo_notification)
                 .setContentTitle(context.getString(R.string.notification_title))
                 .setAutoCancel(true);
 
