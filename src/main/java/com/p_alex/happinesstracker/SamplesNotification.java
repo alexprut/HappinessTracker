@@ -72,7 +72,7 @@ public class SamplesNotification {
 
     public static void fireNotification(Context context) {
         android.app.Notification.Builder notification = new android.app.Notification.Builder(context);
-        notification.setSmallIcon(R.mipmap.logo_notification)
+        notification.setSmallIcon(R.drawable.notification_smile_happy)
                 .setContentTitle(context.getString(R.string.notification_title))
                 .setAutoCancel(true);
 
@@ -100,17 +100,17 @@ public class SamplesNotification {
         );
 
         notification.addAction(
-                R.drawable.smile_sad,
+                R.drawable.notification_smile_sad,
                 context.getString(R.string.text_smile_sad),
                 sadPendingIntent
         );
         notification.addAction(
-                R.drawable.smile_normal,
+                R.drawable.notification_smile_normal,
                 context.getString(R.string.text_smile_normal),
                 normalPendingIntent
         );
         notification.addAction(
-                R.drawable.smile_happy,
+                R.drawable.notification_smile_happy,
                 context.getString(R.string.text_smile_happy),
                 happyPendingIntent
         );
