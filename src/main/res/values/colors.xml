@@ -3,4 +3,5 @@
     <color name="color_sad">#FFF59D</color>
     <color name="color_normal">#FFF176</color>
     <color name="color_happy">#FFEB3B</color>
+    <color name="white">#FFFFFF</color>
 </resources>
