@@ -19,13 +19,13 @@ day it asks you to write something you are grateful for and fi-
 nally randomly during the day it shows you some motivational
 and labeling phrases via notifications.
 
-![Main application activity](https://palexcom.github.io/HappinessTracker/img/HappinessTracker.png)  
+![Main application activity](https://alexprut.github.io/HappinessTracker/img/HappinessTracker.png)
 
-![Notification application activity](https://palexcom.github.io/HappinessTracker/img/HappinessTracker-notifications.png)
+![Notification application activity](https://alexprut.github.io/HappinessTracker/img/HappinessTracker-notifications.png)
 
 The science behind
 ------------------
-You can view and [download the paper from here](https://palexcom.github.io/HappinessTracker/paper/Happiness_Tracker_paper.pdf)  .
+You can view and [download the paper from here](https://alexprut.github.io/HappinessTracker/paper/Happiness_Tracker_paper.pdf)  .
 
 License
 -------
